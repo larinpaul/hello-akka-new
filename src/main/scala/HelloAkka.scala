@@ -25,7 +25,7 @@ object HelloAkkScala extends App {
   val greeter = system.actorOf(Props[Greeter], "greeter")
 
   // Send WhoToGreet Message to actor
-
+  greeter ! WhoToGreet("Akka")
 
 }
 
