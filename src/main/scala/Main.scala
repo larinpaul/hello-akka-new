@@ -31,6 +31,10 @@ class Greeter extends Actor {
   }
 }
 
+// The main method must be a static method.
+// In Scala to create a "static" (actually singleton) method
+// you put it in an object
+// Methods in a class are not static
 object HelloAkkaScala extends App {
 
   // Create the 'hello akka' actor system
