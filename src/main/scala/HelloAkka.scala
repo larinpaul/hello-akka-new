@@ -1,4 +1,4 @@
-import akka.actor.{Actor, ActorSystem}
+import akka.actor.{Actor, ActorSystem, Props}
 
 class HelloAkka {
 
@@ -22,8 +22,10 @@ object HelloAkkScala extends App {
   val system = ActorSystem("Hello-Akka")
 
   // Create the 'greeter' actor
+  val greeter = system.actorOf(Props[Greeter], "greeter")
 
   // Send WhoToGreet Message to actor
+
 
 }
 
