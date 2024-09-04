@@ -1,3 +1,5 @@
+import akka.actor.Actor
+
 class HelloAkka {
 
 }
@@ -8,6 +10,11 @@ case class WhoToGreet(who: String)
 // Define Greeter Actor
 // our receive function is a parcial function that takes anything and returns a unit
 // As we have a single message, we'll have a single case
+class Greeter extends Actor {
+  def receive = {
+    case WhoToGreet(who) => println(s"Hello $who")
+  }
+}
 
 object HelloAkkScala extends App {
 
