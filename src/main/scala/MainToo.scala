@@ -32,6 +32,15 @@ object UserStorage {
     case object Delete extends DBOpearation
   }
 
+  case object Connect
+  case object DisConnect
+  case class Operation(dBOperation: DBOpearation, user: Option[User])
+
 }
 
+class UserStorage extends Actor {
+
+  def connected
+
+}
 
