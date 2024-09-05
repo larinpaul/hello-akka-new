@@ -25,7 +25,8 @@ object Main {
     // (callback, future or message)
     // Actors are asynchronous by nature
 
-
+    // Blocking is when if the delay of one thread can indefinitely delay some of the other threads
+    // On another hand, Non-blocking means that no thread is able to indefinitely delay others
 
   }
 }
