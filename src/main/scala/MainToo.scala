@@ -22,7 +22,7 @@ object UserStorage {
 
 }
 
-class UserStorage extends Actor {
+class UserStorage extends Actor with Stash {
 
   def receive = disconnected
 
@@ -37,7 +37,10 @@ class UserStorage extends Actor {
   def disconnected: Actor.Receive = {
     case Connect =>
         println(s"User Storage connected to DB")
+        unstashAll()
         context.become(connected)
+    case _ =>
+      stash()
   }
 
 }
@@ -49,9 +52,8 @@ object BecomeHotswap extends App {
 
   val userStorage = system.actorOf(Props[UserStorage], "userStorage")
 
-  userStorage ! Connect
-
   userStorage ! Operation(DBOperation.Create, Some(User("Admin", "admin@packt.com")))
+  userStorage ! Connect
 
   userStorage ! Disconnect
 
