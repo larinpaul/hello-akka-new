@@ -31,6 +31,12 @@ object Main {
     // Race condition is when multiple threads have a shared mutable state and if one or more of the threads try to change the state at the same time
     // Actor has one message, so there could be no race condition inside the actor
 
+
+    // Part 3.3. Replacing Actor Behavior via become/unbecome
+
+    // * How to change actor behavior at runtime by become and unbecome
+    // * Stash messages
+
   }
 }
 
