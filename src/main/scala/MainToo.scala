@@ -40,7 +40,13 @@ object UserStorage {
 
 class UserStorage extends Actor {
 
-  def connected
+  def connected: Actor.Receive = ???
+
+  def disconnected: Actor.Receive = {
+    case Connect =>
+        println(s"User Storage connected to DB")
+        context
+  }
 
 }
 
