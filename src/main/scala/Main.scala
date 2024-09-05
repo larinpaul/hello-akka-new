@@ -18,8 +18,11 @@ object Main {
     // Concurrency is when two tasks may start, run, and complete with overlapping time periods
     // (Multitasking on a single core machine)
     // Parallelism is when tasks literally run at the same time
-    // (Multithreads on Multicode processor)
+    // (Multithreads on Multicore processor)
 
+    // A method call is synchronous if the caller cal
+
+    // Actors are asynchronous by nature
 
   }
 }
