@@ -18,7 +18,9 @@ object MainToo {
 
 // package com.packt.akka
 
-import akka.actor.{ Actor, ActorRef, ActorSystem, Props, Stash }
+import UserStorage.{Connect, Operation}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props, Stash}
+import akka.io.UdpConnected.Disconnect
 
 case class User(username: String, email: String)
 
@@ -40,7 +42,13 @@ object UserStorage {
 
 class UserStorage extends Actor {
 
-  def connected: Actor.Receive = ???
+  def connected: Actor.Receive = {
+    case Disconnect =>
+      println("User Storage Disconnect from DB")
+      context.unbecome()
+    case Operation(op, user) =>
+      println(s"User Storage receive ${op} to do in user: ${user}")
+  }
 
   def disconnected: Actor.Receive = {
     case Connect =>
