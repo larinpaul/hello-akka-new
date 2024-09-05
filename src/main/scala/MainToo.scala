@@ -26,21 +26,23 @@ case class User(username: String, email: String)
 
 object UserStorage {
 
-  trait DBOpearation
-  object DBOpearation {
-    case object Create extends DBOpearation
-    case object Update extends DBOpearation
-    case object Read extends DBOpearation
-    case object Delete extends DBOpearation
+  trait DBOperation
+  object DBOperation {
+    case object Create extends DBOperation
+    case object Update extends DBOperation
+    case object Read extends DBOperation
+    case object Delete extends DBOperation
   }
 
   case object Connect
   case object DisConnect
-  case class Operation(dBOperation: DBOpearation, user: Option[User])
+  case class Operation(dBOperation: DBOperation, user: Option[User])
 
 }
 
 class UserStorage extends Actor {
+
+  def receive = disconnected
 
   def connected: Actor.Receive = {
     case Disconnect =>
@@ -56,5 +58,23 @@ class UserStorage extends Actor {
         context.become()
   }
 
+}
+
+object BecomeHotswap extends App {
+  import UserStorage._
+
+  val system = ActorSystem("Hotswap-Become")
+
+  val userStorage = system.actorOf(Props[UserStorage], "userStorage")
+
+  userStorage ! Connect
+
+  userStorage ! Operation(DBOperation.Create, Some(User("Admin", "admin@packt.com")))
+
+  userStorage ! Disconnect
+
+  Thread.sleep(100)
+
+  system.shutdown()
 }
 
