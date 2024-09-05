@@ -45,7 +45,7 @@ class UserStorage extends Actor {
   def disconnected: Actor.Receive = {
     case Connect =>
         println(s"User Storage connected to DB")
-        context
+        context.become()
   }
 
 }
