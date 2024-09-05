@@ -32,10 +32,7 @@ object Main {
     // Actor has one message, so there could be no race condition inside the actor
 
 
-    // Part 3.3. Replacing Actor Behavior via become/unbecome
 
-    // * How to change actor behavior at runtime by become and unbecome
-    // * Stash messages
 
   }
 }
