@@ -15,6 +15,10 @@ object Main {
     // * Non-blocking versus Blocking
     // * Race condition
 
+    // Concurrency is when two tasks may start, run, and complete with overlapping time periods
+    // (Multitasking on a single core machine)
+    // Parallelism is when tasks literally run at the same time
+    // (Multithreads on Multicode processor)
 
 
   }
