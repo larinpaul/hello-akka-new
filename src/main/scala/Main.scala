@@ -9,6 +9,14 @@ object Main {
     // * Create Greeter actor
     // * Send Greet message to your Greeter actor
 
+    // Part 1.3 Concepts and Terminology Learning Akka
+    // * Concurrency and Parallelism
+    // * Asynchronous versus Synchronous
+    // * Non-blocking versus Blocking
+    // * Race condition
+
+
+
   }
 }
 
