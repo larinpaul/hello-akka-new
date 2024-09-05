@@ -28,6 +28,9 @@ object Main {
     // Blocking is when if the delay of one thread can indefinitely delay some of the other threads
     // On another hand, Non-blocking means that no thread is able to indefinitely delay others
 
+    // Race condition is when multiple threads have a shared mutable state and if one or more of the threads try to change the state at the same time
+    // Actor has one message, so there could be no race condition inside the actor
+
   }
 }
 
