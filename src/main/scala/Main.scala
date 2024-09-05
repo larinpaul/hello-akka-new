@@ -20,8 +20,9 @@ object Main {
     // Parallelism is when tasks literally run at the same time
     // (Multithreads on Multicore processor)
 
-    // A method call is synchronous if the caller cal
-
+    // A method call is synchronous if the caller cannot make progress until the method returns a value or throws an exception
+    // A method call is asynchronous if the caller can make progress after a finite number of steps, and the completion of the method may be signaled via some additional mechanism
+    // (callback, future or message)
     // Actors are asynchronous by nature
 
   }
