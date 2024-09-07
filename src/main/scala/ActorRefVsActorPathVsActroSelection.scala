@@ -53,3 +53,24 @@ object Counter {
   final case class Dec(num: Int)
 }
 
+// App.scala
+
+import akka.actor.{ ActorRef, ActorSystem, Props, Actor, PoisonPill }
+
+object ActorPath extends App {
+
+  val system = ActorSystem("Actor-Paths")
+  val counter1 = system.actorOf(Props[Counter], "Counter")
+  println(s"Actor Reference for counter1: ${counter1}")
+  val counterSelection1 = system.actorSelection("counter")
+  println(s"Actor Selection for counter1: ${counterSelection1}")
+  counter1 ! PoisonPill
+  Thread.sleep(100)
+  val counter2 = system.actorOf(Props[Counter], "Counter")
+  println(s"Actor Reference for count2 is: ${counter2}")
+  val counterSelection2 = system.actorSelection(("counter"))
+  println(s"Actor Selection fro counter2 is: ${counterSelection2}")
+  system.terminate()
+
+}
+
