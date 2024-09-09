@@ -89,7 +89,6 @@ class Watcher extends Actor {
     case ActorIdentity(_, None) =>
       println("Actor selection for actor doesn't live : (")
   }
-
 }
 
 
