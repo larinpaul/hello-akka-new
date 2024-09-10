@@ -17,7 +17,7 @@ class SendingMessagesViaRouter {
 
 // package com.packt.akka
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorRef}
 
 class Worker extends Actor {
   import Worker._
@@ -31,3 +31,13 @@ class Worker extends Actor {
 object Worker {
   case class Work()
 }
+
+
+// Implementation of the Router actor
+
+class Router extends Actor {
+  var routees: List[ActorRef] = _
+  override def preStart() = ???
+  def receive() = ???
+}
+
