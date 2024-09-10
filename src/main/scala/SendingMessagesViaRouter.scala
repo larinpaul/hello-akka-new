@@ -17,7 +17,7 @@ class SendingMessagesViaRouter {
 
 // package com.packt.akka
 
-import akka.actor.{Actor, ActorRef}
+import akka.actor.{Actor, ActorRef, Props}
 
 class Worker extends Actor {
   import Worker._
@@ -36,8 +36,22 @@ object Worker {
 // Implementation of the Router actor
 
 class Router extends Actor {
+
   var routees: List[ActorRef] = _
-  override def preStart() = ???
-  def receive() = ???
+
+  override def preStart() = {
+    routees = List.fill(5)(
+      context.actorOf(Props[Worker])
+    )
+  }
+
+  def receive() = {
+    case msg: Work =>
+      println("I'm A Router and I received a Message.....")
+      routees(util.Random.nextInt(routees.size)) forward msg
+  }
+
 }
+// Forward message means that the original sender reference is maintained
+// even though a message is going through a mediator, like a Rooter
 
