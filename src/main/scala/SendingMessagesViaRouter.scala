@@ -75,7 +75,7 @@ class RouterGroup(routees: List[String]) extends Actor {
 // App.scala
 
 import akka.actor.{Props, ActorSystem}
-import com.packt.akka.Worker.Work
+//import com.packt.akka.Worker.Work
 
 object RouterApp extends App {
 
