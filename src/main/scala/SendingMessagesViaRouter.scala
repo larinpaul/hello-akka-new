@@ -17,6 +17,7 @@ class SendingMessagesViaRouter {
 
 // package com.packt.akka
 
+import Worker.Work
 import akka.actor.{Actor, ActorRef, Props}
 
 class Worker extends Actor {
@@ -59,5 +60,39 @@ class RouterGroup(routees: List[String]) extends Actor {
   case msg: Work =>
     println(s"I'm a Router Group and I receive Work Message....")
     context.actorSelection(routees(util.Random.nextInt(routees.size))) forward msg
+}
+
+
+// App.scala
+
+import akka.actor.{Props, ActorSystem}
+import com.packt.akka.Worker.Work
+
+object RouterApp extends App {
+
+  val system = ActorSystem("router")
+
+  system.actorOf(Props[Worker], "w1")
+  system.actorOf(Props[Worker], "w2")
+  system.actorOf(Props[Worker], "w3")
+  system.actorOf(Props[Worker], "w4")
+  system.actorOf(Props[Worker], "w5")
+
+  val workers: List[String] = List(
+    "user/w1",
+    "user/w2",
+    "user/w3",
+    "user/w4",
+    "user/w5")
+  val routerGroup = system.actorOf(Props(classOf[RouterGroup], workers))
+
+  routerGroup ! Work()
+
+  routerGroup ! Work()
+
+  Thread.sleep(100)
+
+  system.terminate()
+
 }
 
