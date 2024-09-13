@@ -62,9 +62,13 @@ class Router extends Actor {
 // even though a message is going through a mediator, like a Rooter
 
 class RouterGroup(routees: List[String]) extends Actor {
-  case msg: Work =>
-    println(s"I'm a Router Group and I receive Work Message....")
-    context.actorSelection(routees(util.Random.nextInt(routees.size))) forward msg
+
+  def receive = {
+    case msg: Work =>
+      println(s"I'm a Router Group and I receive Work Message....")
+      context.actorSelection(routees(util.Random.nextInt(routees.size))) forward msg
+  }
+
 }
 
 
