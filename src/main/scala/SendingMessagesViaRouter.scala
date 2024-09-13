@@ -36,6 +36,11 @@ object Worker {
 
 // Implementation of the Router actor
 
+import scala.util
+
+import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
+import Worker._
+
 class Router extends Actor {
 
   var routees: List[ActorRef] = _
