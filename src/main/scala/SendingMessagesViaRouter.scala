@@ -19,6 +19,7 @@ class SendingMessagesViaRouter {
 
 import Worker.Work
 import akka.actor.{Actor, ActorRef, Props}
+import akka.routing.FromConfig
 
 class Worker extends Actor {
   import Worker._
@@ -107,3 +108,22 @@ object RouterApp extends App {
 }
 // Good... Our implementation is good...
 // But this will create a bottleneck in our app...
+
+
+// package com.packt.akka
+
+// import ...
+
+object Random extends App {
+
+  val system = ActorSystem("Random-Router")
+  val routerPool = system.actorOf(FromConfig.props(Props[Worker]), "random-router-pool")
+  routerPool ! Work()
+  routerPool ! Work()
+  routerPool ! Work()
+  routerPool ! Work()
+  Thread.sleep(100)
+  system.terminate()
+
+}
+
