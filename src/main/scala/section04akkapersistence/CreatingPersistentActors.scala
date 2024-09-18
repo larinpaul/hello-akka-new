@@ -1,7 +1,8 @@
 package section04akkapersistence
 
 import akka.actor.Actor.Receive
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
+import akka.persistence.SnapshotOffer
 
 class CreatingPersistentActors {
 
@@ -121,5 +122,25 @@ class Counter extends PersistentActor with ActorLogging {
     case "print" =>
       println(s"The Current state of counter is ${state}")
   }
+
+}
+
+// package com.pack.akka
+
+
+
+object Persistent extends App {
+  import Counter._
+
+  val system = ActorSystem("persistent-actors")
+
+  val counter = system.actorOf(Props[Counter])
+
+  counter ! Cmd(Increment(3))
+  counter ! Cmd(Increment(5))
+  counter ! Cmd(Decrement(3))
+  counter ! "print"
+  Thread.sleep(1000)
+  system.terminate()
 
 }
