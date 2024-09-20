@@ -1,7 +1,7 @@
 package section04akkapersistence
 
 import akka.actor.Actor.Receive
-import akka.persistence.SnapshotOffer
+import akka.persistence.{RecoveryCompleted, SaveSnapshotFailure, SaveSnapshotSuccess, SnapshotOffer}
 import akka.persistence.fsm.PersistentFSM.State
 
 class PlayingWithAPersistentActor {
@@ -157,10 +157,11 @@ object Persistent extends App {
     case evt: Evt =>
       println(s"Countr receive ${evt} on recovering mood")
       updateState(evt)
-
     case SnapshotOffer(_, snapshot: State) =>
       println(s"Countr receive snapshot with data: {snapshot} on recovering mood")
       state = snapshot
+    case RecoveryCompleted =>
+      println(s"Recovery Complete and Now I'll switch to receiving mode :)")
   }
 
   val receiveCommand: Receive = {
@@ -171,9 +172,20 @@ object Persistent extends App {
       }
     case "print" =>
       println(s"The Current state of counter is ${state}")
+
+    case SaveSnapshotSuccess(metadata) =>
+      println(s"save snapshot succeed.")
+    case SaveSnapshotFailure(metadata, reson) =>
+      println(s"save snapshot failed and failure is ${reason}")
   }
 
-  override def recovery = Recovery.none
+  def takeSnapshot = {
+    if(state.count % 5 == 0) {
+      saveSnapshot(state)
+    }
+  }
+
+//  override def recovery = Recovery.none
 
 }
 
