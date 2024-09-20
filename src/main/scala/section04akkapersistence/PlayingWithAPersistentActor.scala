@@ -67,8 +67,10 @@ class Counter extends PersistentActor with ActorLogging {
   def updateState(evt: Evt): Unit = evt match {
     case Evt(Increment(count)) =>
       state = State(count = state.count + count)
+      takeSnapshot
     case Evt(Decrement(count)) =>
       state = State(count = state.count - count)
+      takeSnapshot
   }
 
   // Persistent receive on recovery mood
