@@ -140,7 +140,6 @@ class Counter extends PersistentActor with ActorLogging {
 // package com.pack.akka
 
 
-
 object Persistent extends App {
   import Counter._
 
