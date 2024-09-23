@@ -73,6 +73,22 @@ class Account extends PersistentFSM[Account.State, Account.Data, Account.DomainE
 
   override def applyEvent(evt: DomainEvent, currentData: Data): Data = {
     evt match {
+      case AcceptedTransaction(amount, CR) =>
+        val newAmount = currentData.amount + amount
+        println(s"Your new balance is ${newAmount}")
+        Balance(currentData.amount + amount)
+      case AcceptedTransaction(amount, DR) =>
+        val newAmount = currentData.amount - amount
+        println(s"Your new balance is ${newAmount}")
+        if(newAmount > 0)
+          Balance(newAmount)
+        else {
+          ZeroBalance
+        case RejectedTransaction(_, _, reason) =>
+          println(s"RejectedTransaction with reason: $reason")
+          currentData
+        }
+    }
 
     }
   }
