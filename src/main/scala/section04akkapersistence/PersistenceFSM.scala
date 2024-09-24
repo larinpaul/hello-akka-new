@@ -93,7 +93,24 @@ class Account extends PersistentFSM[Account.State, Account.Data, Account.DomainE
     }
   }
 
-  override def domainEventClassTag: ClassTag[DomainEvent] =
+  override def domainEventClassTag: ClassTag[DomainEvent] = classTag[DomainEvent]
+
+  startWith(Empty, ZeroBalance)
+
+  when(Empty) {
+    case Event(Operation(amount, CR) _) =>
+    println(s"Hi, It's your first Credit Operation.")
+    goto(Active) applying AcceptedTransaction(amount, CR)
+    case Event(Operation(amount, DR), _)
+    =>
+    println(s"Sorry your account has zero balance.")
+    stay applying RejectedTransaction(amount, DR, "Balance is Zero")
+  }
+
+  when(Active) {
+
+  }
+
 
 }
 
