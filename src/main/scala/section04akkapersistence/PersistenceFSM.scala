@@ -1,7 +1,7 @@
 package section04akkapersistence
 
 import akka.persistence.fsm.PersistentFSM
-import akka.persistence.fsm.PersistentFSM.FSMState
+import akka.persistence.fsm.PersistentFSM.{Event, FSMState}
 
 import scala.reflect.ClassTag
 
@@ -108,7 +108,18 @@ class Account extends PersistentFSM[Account.State, Account.Data, Account.DomainE
   }
 
   when(Active) {
-
+    case Event(Operation(amount, CR), _) =>
+      stay applying AcceptedTransaction(amount, CR)
+    case Event(Operation(amount, DR), balance) =>
+      val newBalance = balance.amount - amount
+      if(newBalance > 0) {
+        stay applying AcceptedTransaction(amount, DR)
+      }
+      else if(newBalance == 0) {
+        gogo(Empty) applying AcceptedTransaction(amount, DR)
+      }
+      else
+        stay applying RejectedTransaction(amount, DR, "balance doesn't cover this operation")
   }
 
 
