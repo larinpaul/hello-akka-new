@@ -1,5 +1,6 @@
 package section04akkapersistence
 
+import akka.actor.{ActorSystem, Props}
 import akka.persistence.fsm.PersistentFSM
 import akka.persistence.fsm.PersistentFSM.{Event, FSMState}
 
@@ -125,6 +126,23 @@ class Account extends PersistentFSM[Account.State, Account.Data, Account.DomainE
 
 }
 
+// package com.packt.akka
 
+// import ...
 
+object PersistentFSM extends App {
+  import Account._
+
+  val system = ActorSystem("persistent-fsm-actors")
+
+  val account = system.actorOf(Props[Account])
+
+  account ! Operation(1000, CR)
+
+  account ! Operation(10, DR)
+
+  Thread.sleep(1000)
+
+  system.terminate()
+}
 
