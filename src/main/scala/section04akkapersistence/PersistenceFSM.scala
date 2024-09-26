@@ -92,7 +92,6 @@ class Account extends PersistentFSM[Account.State, Account.Data, Account.DomainE
     }
 
     }
-  }
 
   override def domainEventClassTag: ClassTag[DomainEvent] = classTag[DomainEvent]
 
