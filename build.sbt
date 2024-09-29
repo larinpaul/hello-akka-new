@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
 
 libraryDependencies ++= Seq(
   // added the "akka-actor" dependency
-  "com.typesafe.akka" %% "akka-actor" % "2.4.20",
+  "com.typesafe.akka" %% "akka-actor" % "2.4.20", // Yeah, maybe wrong version, and the previous version was better after all...
   "com.typesafe.akka" %% "akka-stream" % "2.4.20",
   "com.typesafe.akka" %% "akka-persistence" % "2.4.20",
   "com.typesafe.akka" %% "akka-persistence-query" % "2.4.20",
