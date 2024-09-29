@@ -23,4 +23,21 @@ class PersistenceQuery {
 
 // We will implement a view from our previous persistence actor
 
+// package com.packt.akka
+
+import akka.stream.scaladsl.Source
+import akka.stream.ActorMaterializer
+import akka.actor.ActorSystem
+import akka.persistence.query.{ PersistenceQuery, EventEnvelope }
+import akka.persistence.query.journal.leveldb.scaladsl.LeveldbReadJournal
+
+object Reporter extends App {
+  val system = ActorSystem("persistent-query")
+  implicit val mat = ActorMaterializer()(system)
+  val queries = PersistentQuery(system)
+  val evts: Source[EventEnvelope, Unit] = ???
+  Thread.sleep(1000)
+  system.terminate()
+}
+
 
