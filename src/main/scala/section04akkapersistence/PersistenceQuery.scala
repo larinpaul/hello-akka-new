@@ -34,8 +34,10 @@ import akka.persistence.query.journal.leveldb.scaladsl.LeveldbReadJournal
 object Reporter extends App {
   val system = ActorSystem("persistent-query")
   implicit val mat = ActorMaterializer()(system)
-  val queries = PersistentQuery(system)
-  val evts: Source[EventEnvelope, Unit] = ???
+  val queries = PersistentQuery(system).readJournalFor[LeveldbReadJournal](
+    LeveldbReadJournal.Identifier
+  )
+  val evts.runForeach { evt => println(s"Event $e") }
   Thread.sleep(1000)
   system.terminate()
 }
