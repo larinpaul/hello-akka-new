@@ -16,5 +16,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence" % "2.4.20",
   "com.typesafe.akka" %% "akka-persistence-query" % "2.4.20",
   "org.iq80.leveldb" % "leveldb" % "0.7",
-  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8"
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+  "com.typesafe.akka" %% "akka-remote" % "2.3.12"
 )
