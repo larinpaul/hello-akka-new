@@ -29,3 +29,11 @@ object MemberServiceLookup extends App {
   worker ! Worker.Work("Hi Remote Actor")
 }
 
+object MembersServiceRemoteCreation extends App {
+  val config = ConfigFactory.load.getConfig("MembersServiceRemoteCreation")
+  val system = ActorSystem("MembersServiceRemoteCreation", config)
+  val workerActor = system.actorOf(Props[Worker], "workerActorRemote")
+  println(s"The remote path of worker Actor is ${workerActor.path}")
+  workerActor ! Worker.Work("Hi Remote Worker")
+}
+
