@@ -7,4 +7,9 @@ class Section52BuildingAClusterLearningAkka {
   // membership service with no single point of failure or single point of bottleneck
   // * Akka Cluster does this using gossip protocol and an automatic failure detector
 
+  // Membership Lifecycle
+  // Joining -> Up -> Leaving -> Existing -> Removed
+  //            |                              A
+  //            -> Existing -> Down -----------|
+
 }
