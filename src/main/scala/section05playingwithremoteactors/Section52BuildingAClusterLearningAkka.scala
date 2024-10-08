@@ -12,4 +12,7 @@ class Section52BuildingAClusterLearningAkka {
   //            |                              A
   //            -> Existing -> Down -----------|
 
+  // We will have a frontend and a backend node
+  //
+
 }
