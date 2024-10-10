@@ -1,6 +1,6 @@
 package section05playingwithremoteactors
 
-import akka.actor.Actor
+import akka.actor.{Actor, RootActorPath}
 
 class Section52BuildingAClusterLearningAkka {
 
@@ -25,17 +25,26 @@ class Section52BuildingAClusterLearningAkka {
 
 class Backend extends Actor {
 
-  val cluster = ???
+  val cluster = Cluster(context.system)
 
   // subscribe to cluster changes, MemberUp
   // re-subscribe when restart
-  override def preStart(): Unit = ???
+  override def preStart(): Unit = {
+    cluster.subscribe(self, classOf[MemberUp])
+  }
 
-  override def postStop(): Unit = ???
+  override def postStop(): Unit = {
+    cluster.unsubscribe(self)
+  }
 
   def receive = {
     case Add(num1, num2) =>
       println(s"I'm a backend with path: ${self} and I received add operation.")
+    case MemberUp(member) =>
+      if(member.hasRole("frontend")){
+        context.actorSelection(RootActorPath(member.address) / "user" / "frontend") !
+          BackendRegistration
+      }
   }
 
 }
