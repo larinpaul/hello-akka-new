@@ -1,5 +1,7 @@
 package section05playingwithremoteactors
 
+import akka.actor.Actor
+
 class Section52BuildingAClusterLearningAkka {
 
   // Akka Cluster
@@ -16,3 +18,27 @@ class Section52BuildingAClusterLearningAkka {
   //
 
 }
+
+// package com.packt.akka.cluster
+
+// import ...
+
+class Backend extends Actor {
+
+  val cluster = ???
+
+  // subscribe to cluster changes, MemberUp
+  // re-subscribe when restart
+  override def preStart(): Unit = ???
+
+  override def postStop(): Unit = ???
+
+  def receive = {
+    case Add(num1, num2) =>
+      println(s"I'm a backend with path: ${self} and I received add operation.")
+  }
+
+}
+
+object Backend {}
+
