@@ -1,6 +1,7 @@
 package section05playingwithremoteactors
 
-import akka.actor.{Actor, RootActorPath}
+import akka.actor.{Actor, ActorSystem, Props, RootActorPath}
+import com.typesafe.config.ConfigFactory
 
 class Section52BuildingAClusterLearningAkka {
 
@@ -49,5 +50,13 @@ class Backend extends Actor {
 
 }
 
-object Backend {}
+object Backend {
+  def initiate(port: Int) = {
+    val config = ConfigFactory.parseString(s"akka.remote.netty.tcp.port=$port").
+      withFallback(ConfigFactory.load().getConfig("Backend"))
 
+    val system = ActorSystem("ClusterSystem", config)
+
+    val Backend = system.actorOf(Props[Backend], name = "Backend")
+  }
+}
