@@ -86,5 +86,16 @@ class Frontend extends Actor {
 
 }
 
-object Frontend {...}
+object Frontend {
+
+  private var _frontend: ActorRef = _
+
+  def initiate() = {
+    val config = ConfigFactory.load().getConfig("Frontend")
+    val system = ActorSystem("ClusterSystem", config)
+    _frontend = system.actorOf(Props[Frontend], name = "frontend")
+  }
+
+  def getFrontend = _frontend
+}
 
