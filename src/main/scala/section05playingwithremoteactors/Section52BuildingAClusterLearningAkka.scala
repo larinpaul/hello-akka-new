@@ -1,7 +1,9 @@
 package section05playingwithremoteactors
 
-import akka.actor.{Actor, ActorSystem, Props, RootActorPath}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props, RootActorPath, Terminated}
 import com.typesafe.config.ConfigFactory
+
+import scala.util.Random
 
 class Section52BuildingAClusterLearningAkka {
 
@@ -60,3 +62,29 @@ object Backend {
     val Backend = system.actorOf(Props[Backend], name = "Backend")
   }
 }
+
+
+// package com.packt.akka.cluster
+
+// import ...
+
+class Frontend extends Actor {
+
+  var backends = IndexedSeq.empty[ActorRef]
+
+  def receive = {
+    case Add if backends.isEmpty =>
+      println("Service unavailable, cluster doesn't have backend node.")
+      backends(Random.nextInt(backends.size)) forward addOp
+    case BackendRegistration if !(backends.contains(sender())) =>
+      backends = backends :+ sender()
+      context watch(sender())
+    case Terminated(a) =>
+      backends = backends.filterNot(_ == a)
+
+  }
+
+}
+
+object Frontend {...}
+
