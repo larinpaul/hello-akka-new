@@ -1,7 +1,8 @@
 package section05playingwithremoteactors
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.routing.FromConfig
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration.DurationInt
 import scala.util.Random
@@ -42,6 +43,19 @@ class Frontend extends Actor {
       backend forward addOp
   }
 
+}
+
+object Frontend {
+
+  private var _frontend: ActorRef = _
+
+  def initiate() = {
+    val config = ConfigFactory.load().getConfig("Frontend")
+    val system = ActorSystem("ClusterSystem", config)
+    _frontend = system.actorOf(Props[Frontend], name = "frontend")
+  }
+
+  def getFrontend = _frontend
 }
 
 
