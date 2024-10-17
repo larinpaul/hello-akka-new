@@ -1,6 +1,7 @@
 package section05playingwithremoteactors
 
-import akka.actor.ActorRef
+import akka.actor.{ActorLogging, ActorRef}
+import akka.persistence.PersistentActor
 
 class Section54CreatingASingletonActorInTheCluster {
 
@@ -41,4 +42,39 @@ object Master {
   case class State(workers: Set[ActorRef], works: List[Work])
 
   case object NoWork
+}
+
+class Master extends PersistentActor with ActorLogging {
+  import Master._
+
+  var workers: Set[ActorRef] = Set.empty
+  var works: List[Work] = List.empty
+
+  override def persistenceId: String = self.path.parent.name + "-" + self.path.name
+
+  def updateState(evt: Event): Unit = evt match {...}
+
+  val receiveRecover: Receive = {...}
+
+  val receiveCommand: Receive = {
+    case RegisterWorker(worker) =>
+      persist(AddWorker(worker)) { evt =>
+        updateState(evt)
+      }
+
+    case RequestWork if works.isEmpty =>
+      sender() ! NoWork
+
+    case RequestWork(requester) if workers.contains(requester) =>
+      sender() ! works.head
+      persist(UpdateWorks(works.tail)) { evt =>
+        updateState(evt)
+      }
+
+    case w: Work =>
+      persist(AddWork(w)) { evt =>
+        updateState(evt)
+      }
+  }
+
 }
