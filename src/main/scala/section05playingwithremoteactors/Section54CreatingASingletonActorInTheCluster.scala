@@ -1,6 +1,6 @@
 package section05playingwithremoteactors
 
-import akka.actor.{ActorLogging, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.persistence.PersistentActor
 
 class Section54CreatingASingletonActorInTheCluster {
@@ -78,3 +78,14 @@ class Master extends PersistentActor with ActorLogging {
   }
 
 }
+
+// package com.packt.akka.cluster.singleton
+
+// import ...
+
+class Worker extends Actor with ActorLogging {
+
+
+}
+
+
