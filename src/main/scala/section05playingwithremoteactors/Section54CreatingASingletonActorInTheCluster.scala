@@ -1,7 +1,11 @@
 package section05playingwithremoteactors
 
-import akka.actor.{Actor, ActorLogging, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.persistence.PersistentActor
+import akka.persistence.Recovery.none
+import section05playingwithremoteactors.Master.{RegisterWorker, RequestWork, Work}
+
+import scala.concurrent.duration.DurationInt
 
 class Section54CreatingASingletonActorInTheCluster {
 
@@ -84,8 +88,24 @@ class Master extends PersistentActor with ActorLogging {
 // import ...
 
 class Worker extends Actor with ActorLogging {
+  // import ...
 
+  val masterProxy = context.actorOf(ClusterSingletonProxy.props(
+    singletonManagerPath = "/user/master",
+    settings = ClusterSingletonProxySettings(context.system).withRole(none)
+  ), name= "masterProxy")
 
+  context.system.scheduler.schedule(0.second, 30.second, masterProxy, RegisterWorker(self))
+  context.system.scheduler.schedule(3.second, masterProxy, RequestWork(self))
+
+  def receive = {
+    case Work(requester, op) =>
+      log.info(s"Worker: I received work with op: $op and I will reply to $requester.")
+  }
+}
+
+object Worker {
+  def props = Props(new Wokrer())
 }
 
 
