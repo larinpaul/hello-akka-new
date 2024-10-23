@@ -1,6 +1,7 @@
 package section05playingwithremoteactors
 
 import akka.actor.ActorLogging
+import akka.actor.SupervisorStrategy.Stop
 import akka.persistence.PersistentActor
 
 import scala.concurrent.duration.DurationInt
@@ -37,6 +38,19 @@ class Counter extends PersistentActor with ActorLogging {
     case evt: CounterChanged => updateState(evt)
   }
 
-  //...
+  override def receiveCommand: Receive = {
+    case Increment =>
+      log.info(s"Counter with path: ${self} recevied Increment Command")
+      persist(CounterChanged(+1))(updateState)
+    case Decrement =>
+      log.info(s"Counter with path: ${self} recevied Decrement Command")
+      persist(CounterChanged(-1))(updateState)
+    case Get =>
+      log.info(s"Counter with path: ${self} received Get Command")
+      log.info(s"Count = ${count}")
+      sender() ! count
+    case Stop =>
+      context.stop(self)
+  }
 
 }
