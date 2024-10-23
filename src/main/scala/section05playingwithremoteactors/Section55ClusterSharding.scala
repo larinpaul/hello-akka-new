@@ -1,6 +1,6 @@
 package section05playingwithremoteactors
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, Props}
 import akka.actor.SupervisorStrategy.Stop
 import akka.persistence.PersistentActor
 
@@ -23,7 +23,7 @@ class Section55ClusterSharding {
 // import ...
 
 class Counter extends PersistentActor with ActorLogging {
-  import section04akkapersistence.Counter._
+  import Counter._
 
   context.setReceiveTimeout(120.seconds)
 
@@ -52,5 +52,29 @@ class Counter extends PersistentActor with ActorLogging {
     case Stop =>
       context.stop(self)
   }
+}
+
+object Counter {
+
+  trait Command
+  case object Increment extends Command
+  case object Decrement extends Command
+  case object Get extends Command
+  case object Stop extends Command
+
+  trait Event
+  case class CounterChanged(delta: Int) extends Event
+
+  // Sharding Name
+  val shardName: String = "Counter"
+
+  // outside world if he want to send message to sharding should use this message
+  case class CounterMessage(id: Long, cmd: Command)
+
+  // id extractor
+
+  // shard resolver
+
+  def props() = Props[Counter]
 
 }
