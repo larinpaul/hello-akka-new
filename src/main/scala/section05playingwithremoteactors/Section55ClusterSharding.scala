@@ -72,8 +72,14 @@ object Counter {
   case class CounterMessage(id: Long, cmd: Command)
 
   // id extractor
+  val idExtractor: ShardRegion.ExtractEntityId = {
+    case CounterMessage(id, msg) => (id.toString, msg)
+  }
 
   // shard resolver
+  val shardResolver: ShardRegion.ExtractShardId = {
+    case CounterMessage(id, msg) => (id % 12).toString
+  }
 
   def props() = Props[Counter]
 
