@@ -1,10 +1,13 @@
 package section05playingwithremoteactors
 
-import akka.actor.{ActorLogging, Props}
+import Counter.Inc
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.actor.SupervisorStrategy.Stop
 import akka.persistence.PersistentActor
+import section05playingwithremoteactors.Frontend.Tick
 
 import scala.concurrent.duration.DurationInt
+import scala.util.Random
 
 class Section55ClusterSharding {
 
@@ -83,4 +86,30 @@ object Counter {
 
   def props() = Props[Counter]
 
+}
+
+// Frontend actor
+
+// package com.packt.akka.cluster.sharding
+
+// import ...
+
+class Frontend extends Actor with ActorLogging {
+  // import ...
+
+  val counterRegion: ActorRef = ???
+
+  def receive = {
+    case Tick(Inc) =>
+      log.info(s"Frontend: Send Increment message to shard region.")
+      counterRegion ! Counter.CounterMessage(getId, Counter.Increment)
+    case Tick(Dec) =>
+      log.info(s"Frontend: Send Decrement message to shard region.")
+      ounterRegion ! Counter.CounterMessage(getId, Counter.Decrement)
+    case Tick(Get) =>
+      log.info(s"Frontend: Send Get message to shard region.")
+      counterRegion ! Counter.CounterMessage(getId, Counter.Get)
+  }
+
+  def getId = Random.nextInt(4)
 }
