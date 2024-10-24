@@ -113,3 +113,12 @@ class Frontend extends Actor with ActorLogging {
 
   def getId = Random.nextInt(4)
 }
+
+object Frontend {
+  sealed trait Op
+  case object Inc extends Op
+  case object Dec extends Op
+  case object Get extends Op
+
+  case class Tick(op: Op)
+}
