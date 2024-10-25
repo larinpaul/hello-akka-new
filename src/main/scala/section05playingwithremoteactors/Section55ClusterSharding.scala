@@ -4,7 +4,7 @@ import Counter.Inc
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.actor.SupervisorStrategy.Stop
 import akka.persistence.PersistentActor
-import section05playingwithremoteactors.Frontend.Tick
+import section05playingwithremoteactors.Frontend.{Dec, Get, Inc, Tick}
 
 import scala.concurrent.duration.DurationInt
 import scala.util.Random
@@ -97,7 +97,7 @@ object Counter {
 class Frontend extends Actor with ActorLogging {
   // import ...
 
-  val counterRegion: ActorRef = ???
+  val counterRegion: ActorRef = ClusterSharding(context.system).shardRegion(Counter.shardName)
 
   def receive = {
     case Tick(Inc) =>
@@ -105,7 +105,7 @@ class Frontend extends Actor with ActorLogging {
       counterRegion ! Counter.CounterMessage(getId, Counter.Increment)
     case Tick(Dec) =>
       log.info(s"Frontend: Send Decrement message to shard region.")
-      ounterRegion ! Counter.CounterMessage(getId, Counter.Decrement)
+      counterRegion ! Counter.CounterMessage(getId, Counter.Decrement)
     case Tick(Get) =>
       log.info(s"Frontend: Send Get message to shard region.")
       counterRegion ! Counter.CounterMessage(getId, Counter.Get)
