@@ -1,4 +1,7 @@
 import akka.actor.{ActorSystem, Props}
+
+import scala.Console.in
+import scala.concurrent.duration.DurationInt
 // package com.packt.akka
 
 // import ...
@@ -27,8 +30,12 @@ class CounterSpec extends TestKit(ActorSystem("test-system"))
 
   }
 
-  it should "handle Increment message" in {
+  it should "handle Increment message" in { // let's define a running instance
+    val counter = system.actorOf(Props[Counter])
 
+    counter ! Counter.Increment
+
+    expectNoMsg(1.second)
   }
 
 }
