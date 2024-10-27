@@ -5,6 +5,7 @@ import akka.actor.{ActorSystem, Props}
 
 class CounterSpec extends TestKit(ActorSystem("test-system"))
                   with FlatSpecLike
+                  with ImplicitSender // makes the test kit able to receive messages directly
                   with BeforeAndAfterAll
                   with MustMatchers {
   override def afterAll = {
@@ -25,5 +26,10 @@ class CounterSpec extends TestKit(ActorSystem("test-system"))
     state must equal(1)
 
   }
+
+  it should "handle Increment message" in {
+
+  }
+
 }
 
