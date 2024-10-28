@@ -38,5 +38,13 @@ class CounterSpec extends TestKit(ActorSystem("test-system"))
     expectNoMsg(1.second)
   }
 
+  it should "handle Decrement message" in {
+    val counter = system.actorOf(Props[Counter])
+
+    counter ! Counter.Decrement
+
+    expectNoMsg(1.second)
+  }
+
 }
 
