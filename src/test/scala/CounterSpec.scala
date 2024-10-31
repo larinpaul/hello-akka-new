@@ -46,5 +46,13 @@ class CounterSpec extends TestKit(ActorSystem("test-system"))
     expectNoMsg(1.second)
   }
 
+  it should "handle GetCount message" in {
+    val counter = system.actorOf(Props[Counter])
+
+    counter ! Counter.GetCount
+
+    expectMsg(0)
+  }
+
 }
 
