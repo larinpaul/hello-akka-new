@@ -54,5 +54,22 @@ class CounterSpec extends TestKit(ActorSystem("test-system"))
     expectMsg(0)
   }
 
+  it should "handle sequence of messages" in {
+    val counter = system.actorOf(Props[Counter])
+
+    counter ! Counter.Increment
+    counter ! Counter.Increment
+
+    counter ! Counter.Decrement
+
+    counter ! Counter.Increment
+
+    counter ! Counter.GetCount
+
+    expectMsg(2)
+  }
+
+  // you can other tests on Testing Actor Systems on doc.akka.io
+
 }
 
