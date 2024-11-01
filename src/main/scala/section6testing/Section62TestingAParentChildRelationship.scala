@@ -7,3 +7,15 @@ class Section62TestingAParentChildRelationship {
   // * Testing child actor
 
 }
+
+// package com.packt.akka
+
+import akka.actor.Actor
+
+class Child extends Actor {
+  def receive = {
+    case "ping" => context.parent ! "pong"
+  }
+}
+
+
