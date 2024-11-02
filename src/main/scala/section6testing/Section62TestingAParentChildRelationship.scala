@@ -10,7 +10,7 @@ class Section62TestingAParentChildRelationship {
 
 // package com.packt.akka
 
-import akka.actor.{ActorRef, Actor}
+import akka.actor.{Actor, ActorRef, ActorRefFactory}
 
 class Child(parent: ActorRef) extends Actor { // When it receives the "ping" message, it sends a "pong" to its parent
   def receive = {
@@ -22,8 +22,8 @@ class Child(parent: ActorRef) extends Actor { // When it receives the "ping" mes
 
 import akka.actor.{ Actor, Props }
 
-class Parent extends Actor {
-  val child = context.actorOf(Props[Child])
+class Parent(childMaker: ActorRefFactory => ActorRef) extends Actor {
+  val child = childMaker(context)
   var ponged = false
 
   def receive = {
