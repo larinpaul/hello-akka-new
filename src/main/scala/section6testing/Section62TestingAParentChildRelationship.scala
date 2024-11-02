@@ -10,11 +10,11 @@ class Section62TestingAParentChildRelationship {
 
 // package com.packt.akka
 
-import akka.actor.Actor
+import akka.actor.{ActorRef, Actor}
 
-class Child extends Actor { // When it receives the "ping" message, it sends a "pong" to its parent
+class Child(parent: ActorRef) extends Actor { // When it receives the "ping" message, it sends a "pong" to its parent
   def receive = {
-    case "ping" => context.parent ! "pong"
+    case "ping" => parent ! "pong"
   }
 }
 
