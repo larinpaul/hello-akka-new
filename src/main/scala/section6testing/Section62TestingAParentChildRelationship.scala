@@ -22,6 +22,7 @@ class Child(parent: ActorRef) extends Actor { // When it receives the "ping" mes
 
 import akka.actor.{ Actor, Props }
 
+// we used the dependency injection approach...
 class Parent(childMaker: ActorRefFactory => ActorRef) extends Actor {
   val child = childMaker(context)
   var ponged = false

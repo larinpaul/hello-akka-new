@@ -1,8 +1,12 @@
 package com.packt.akka
 
-import akka.actor.{ActorSystem, Props}
+import org.scalatest.MustMatchers
+import akka.actor.{ActorRefFactory, ActorSystem, Props}
+import akka.testkit.{ImplicitSender, TestKit, TestProbe}
+import org.scalatest.{BeforeAndAfterAll, FlatSpecLike}
+import section6testing.Parent
 
-class ChildSpec extends TestKit(ActorSystem("test-system"))
+class ParentSpec extends TestKit(ActorSystem("test-system"))
                   with ImplicitSender
                   with FlatSpecLike
                   with BeforeAndAfterAll
@@ -12,14 +16,16 @@ class ChildSpec extends TestKit(ActorSystem("test-system"))
     TestKit.shutdownActorSystem(system)
   }
 
-  "Child Actor" should "send pong message when receive ping message" in {
-    val parent = TestProbe()
+  "Parent" should "send ping message to child when receive ping it message" in {
+    val child = TestProbe()
 
-    val child = system.actorOf(Props(new Child(parent.ref)))
+    val childMaker = (_: ActorRefFactory) => child.ref
 
-    child ! "ping"
+    val parent = system.actorOf(Props(new Parent(childMaker)))
 
-    parent.expectMsg("pong")
+    parent ! "ping"
+
+    child.expectMsg("ping")
   }
 
 }
