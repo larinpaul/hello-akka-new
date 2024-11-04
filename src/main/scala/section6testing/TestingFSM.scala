@@ -52,4 +52,30 @@ class UserStorageFSM extends FSM[UserStorageFSM.State, UserStorageFSM.Data] with
 
 }
 
+// package com.packt.akka // test
+
+// import ...
+
+class UserStorageSpec extends TestKit(ActorSystem("test-system"))
+                      with ImplicitSender
+                      with FlatSpecLike
+                      with BeforeAndAfterAll
+                      with MustMatchers {
+  import UserStorageFSM._
+
+  override def afterAll(): Unit = {
+    TestKit.shutdownActorSystem(system)
+  }
+
+  "User Storage" should "Start with disconnected state and empty data" in {
+    val storage = TestFSMRef(new UserStorageFSM())
+
+    storage.stateName must equal(Disconnected)
+    storage.stateData must equal(EmptyData)
+
+
+  }
+
+
+}
 
