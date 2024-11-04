@@ -106,5 +106,16 @@ class UserStorageSpec extends TestKit(ActorSystem("test-system"))
     storage.stateData must equal(EmtpyData)
   }
 
+  it should "be still on connected state if it receive any DB operations" in {
+    val storage = TestFSMRef(new UserStorageFSM())
+
+    storage ! Connect
+
+    storage ! DBOperation.Create
+
+    storage.stateData must equal(EmptyData)
+    storage.stateName must equal(Connected)
+  }
+
 }
 
