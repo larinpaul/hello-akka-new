@@ -95,6 +95,16 @@ class UserStorageSpec extends TestKit(ActorSystem("test-system"))
     storage.stateData must equal(EmptyData)
   }
 
+  it "be switch to disconnected when it receive a disconnect message on Connected state" in {
+    val storage = TestFSMRef(new UserStorageFSM)
+
+    storage ! Connect
+
+    storage ! Disconnect
+
+    storage.stateName must equal(Disconnected)
+    storage.stateData must equal(EmtpyData)
+  }
 
 }
 
