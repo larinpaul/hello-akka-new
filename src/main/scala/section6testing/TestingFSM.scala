@@ -18,9 +18,10 @@ class TestingFSM {
 
 // package com.packt.akka
 
-import UserStorage.Operation
 import akka.actor.{ActorSystem, FSM, Props, Stash}
 import akka.io.UdpConnected.{Connect, Connected, Disconnect, Disconnected}
+
+import scala.Console.in
 
 class UserStorageFSM extends FSM[UserStorageFSM.State, UserStorageFSM.Data] with Stash {
   import UserStorageFSM._
@@ -73,7 +74,15 @@ class UserStorageSpec extends TestKit(ActorSystem("test-system"))
     storage.stateName must equal(Disconnected)
     storage.stateData must equal(EmptyData)
 
+  }
 
+  it should be "connected state if it receive a connect message" in {
+    val storage = TestFSMRef(new UserStorageFSM())
+
+    storage ! Connect
+
+    storage.stateName must equal(Connected)
+    storage.stateData must equal(EmptyData)
   }
 
 
