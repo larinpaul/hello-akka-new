@@ -18,6 +18,7 @@ class TestingFSM {
 
 // package com.packt.akka
 
+import UserStorage.DBOperation
 import akka.actor.{ActorSystem, FSM, Props, Stash}
 import akka.io.UdpConnected.{Connect, Connected, Disconnect, Disconnected}
 
@@ -82,6 +83,15 @@ class UserStorageSpec extends TestKit(ActorSystem("test-system"))
     storage ! Connect
 
     storage.stateName must equal(Connected)
+    storage.stateData must equal(EmptyData)
+  }
+
+  it should "be still in disconnected state if it receive any other messages" in {
+    val storage = TestFSMRef(new UserStorageFSM())
+
+    storage ! DBOperation.Create
+
+    storage.stateName must equal(Disconnected)
     storage.stateData must equal(EmptyData)
   }
 
