@@ -7,5 +7,7 @@ class Section64MultiNodeTesting {
   // * Parts of Multi Node test kit
   // * Implementing an example
   // * Multi JVM testing (same machine, multiple JVM)
+  // * Multi Node testing (many JVMs, many machines)
+  // * But the API is basically the same
 
 }
